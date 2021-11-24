@@ -28,4 +28,16 @@ export class FilmsService {
        };
      }
    }
+
+   async saveFilms() {
+
+   }
+
+   async addFilmToFavorites() {
+
+   }
+
+   async removeFilmFromFavorites(){
+       
+   }
 }
