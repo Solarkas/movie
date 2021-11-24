@@ -28,13 +28,14 @@ export class Router {
     }
 
     #hashChange() {
-        console.log('this', this)
       const routeInfo = this.#getRouteInfo();
+      
       const TargetView = this.#routes[routeInfo.routeName] || FilmsView;
       if (TargetView) {
         this.#root.innerHTML = '';
+        const paramsForRender = this.#controller.getViewParams(routeInfo.routeName);
         const targetView = new TargetView(this.#root);
-        targetView.render();
+        targetView.render(...paramsForRender);
       }
     }
 
