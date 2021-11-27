@@ -1,12 +1,36 @@
+//proverka
 import { renderFilmComponent } from '../core/components/filmComponent';
-import { Routes } from '../css/constants/routes';
+import { Routes } from '../core/constants/routes';
 import { View } from './View';
 
 export class FavoritesView extends View {
- static #Text = {
-   Title: `Your Favorite Films`,
-   SeeAllFilms: `See all films`
- }
+  #filmsContainer
+
+  static #Text = {
+    Title: 'Your Favorite Films',
+    SeeAllFilmsButtonText: 'See All Films',
+  }
+
+  constructor(root) {
+    super(root);
+
+    this.#filmsContainer = null;
+  }
+
+  #renderFilms(favoriteFilmModels) {
+    this.#filmsContainer.innerHTML = '';
+    favoriteFilmModels.forEach((filmModel) => {
+      const filmHTML = renderFilmComponent({
+        filmModel,
+        handleFavoriteButtonClick: this.getHandleFavoriteButtonClick(),
+      });
+      this.#filmsContainer.append(filmHTML);
+    });
+  }
+
+  update(favoriteFilmModels) {
+    this.#renderFilms(favoriteFilmModels);
+  }
 
   render(favoriteFilmModels = []) {
     const container = document.createElement('div');
@@ -21,17 +45,14 @@ export class FavoritesView extends View {
     const allFilmsLink = document.createElement('a');
     allFilmsLink.href = `#${Routes.Main}`;
     allFilmsLink.className = 'link-button film-cards-container__link-button';
-    allFilmsLink.textContent = FavoritesView.#Text.SeeAllFilms;
+    allFilmsLink.textContent = FavoritesView.#Text.SeeAllFilmsButtonText;
     linksBlock.append(allFilmsLink);
 
-    const filmsContainer = document.createElement('div');
-    filmsContainer.className = 'film-cards-container';
-    favoriteFilmModels.forEach((filmModel)=> {
-        const filmHTML = renderFilmComponent({ filmModel });
-        filmsContainer.append(filmHTML);
-    })
+    this.#filmsContainer = document.createElement('div');
+    this.#filmsContainer.className = 'film-cards-container';
+    this.#renderFilms(favoriteFilmModels);
 
-    container.append(titleHTML, linksBlock, filmsContainer);
+    container.append(titleHTML, linksBlock, this.#filmsContainer);
 
     this.getRoot().append(container);
   }

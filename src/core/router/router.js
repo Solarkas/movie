@@ -1,46 +1,59 @@
-import { FilmsView } from "../../views/filmsView";
-import { FilmView } from "../../views/FilmView";
+//proverka
+import { FilmsView } from '../../views/FilmsView1';
 
 export class Router {
-    #controller
+  #controller
 
-    #root
+  #routes
 
-    #routes
+  #root
 
-    constructor(routes, root) {
-      this.#routes = routes;
-      this.#root = root;
-      this.#controller = null;
+  #targetView
+
+  constructor(routes, root) {
+    this.#routes = routes;
+    this.#controller = null;
+    this.#root = root;
+    this.#targetView = null;
+  }
+
+  setController(controller) {
+    this.#controller = controller;
+  }
+
+  #getRouteInfo() {
+    const { location } = window;
+    const { hash } = location;
+
+    return {
+      routeName: hash.slice(1),
+    };
+  }
+
+  async #hashChange() {
+    const routeInfo = this.#getRouteInfo();
+    const TargetView = this.#routes[routeInfo.routeName] || FilmsView;
+    if (TargetView) {
+      this.#root.innerHTML = '';
+      const paramsForRender = await this.#controller.getViewParams(routeInfo.routeName);
+      this.#targetView = new TargetView(this.#root);
+      this.#targetView.setHandleFavoriteButtonClick(
+        this.#controller.handleFavoriteButtonClick.bind(this.#controller),
+      );
+      this.#targetView.render(...paramsForRender);
     }
+  }
 
-    setController(controller) {
-      this.#controller = controller;
+  async updateView() {
+    const routeInfo = this.#getRouteInfo();
+    const paramsForRender = await this.#controller.getViewParams(routeInfo.routeName);
+    if (this.#targetView) {
+      this.#targetView.update(...paramsForRender);
     }
+  }
 
-    #getRouteInfo() {
-      const { location } = window;
-      const { hash } = location;
-
-      return {
-        routeName: hash.slice(1),
-      };
-    }
-
-    #hashChange() {
-      const routeInfo = this.#getRouteInfo();
-      
-      const TargetView = this.#routes[routeInfo.routeName] || FilmsView;
-      if (TargetView) {
-        this.#root.innerHTML = '';
-        const paramsForRender = this.#controller.getViewParams(routeInfo.routeName);
-        const targetView = new TargetView(this.#root);
-        targetView.render(...paramsForRender);
-      }
-    }
-
-    init() {
-      window.addEventListener('hashchange', this.#hashChange.bind(this));
-      this.#hashChange();
-    }
+  init() {
+    window.addEventListener('hashchange', this.#hashChange.bind(this));
+    this.#hashChange();
+  }
 }

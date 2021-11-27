@@ -1,43 +1,44 @@
+//proverka
 export class FilmModel {
-   #poster
+  #poster
 
-   #title
+  #title
 
-   #year
+  #year
 
-   #imbdID
+  #imdbID
 
-   #isFavorite
+  #isFavorite
 
-   constructor(filmData) {
-     this.#poster = filmData.Poster;
-     this.#title = filmData.Title;
-     this.#year = filmData.Year;
-     this.#imbdID = filmData.imbdID;
-     this.#isFavorite = false;
-   }
+  constructor(filmData) {
+    this.#poster = filmData.Poster;
+    this.#title = filmData.Title;
+    this.#year = filmData.Year;
+    this.#imdbID = filmData.imdbID;
+    this.#isFavorite = filmData.isFavorite;
+  }
 
-   getPoster() {
-     return this.#poster;
-   }
+  getPoster() {
+    return this.#poster;
+  }
 
-   getTitle() {
-     return this.#title;
-   }
+  getTitle() {
+    return this.#title;
+  }
 
-   getYear() {
-     return this.#year;
-   }
+  getYear() {
+    return this.#year;
+  }
 
-   getId() {
-     return this.#imbdID;
-   }
+  getId() {
+    return this.#imdbID;
+  }
 
-   getIsFavorite() {
-     return this.#isFavorite;
-   }
+  getIsFavorite() {
+    return this.#isFavorite;
+  }
 
-   setIsfavorite(isFavorite) {
-     this.#isFavorite = isFavorite;
-   }
+  setIsFavorite(isFavorite) {
+    this.#isFavorite = isFavorite;
+  }
 }

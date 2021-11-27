@@ -1,19 +1,27 @@
+//proverka 
 export class View {
- #root
+  #handleFavoriteButtonClick;
 
- constructor(root) {
-   this.#root = root;
- }
+  #root
 
- getRoot() {
-   return this.#root;
- }
+  constructor(root) {
+    this.#root = root;
+    this.#handleFavoriteButtonClick = null;
+  }
 
- update() {
+  getRoot() {
+    return this.#root;
+  }
 
- }
+  getHandleFavoriteButtonClick() {
+    return this.#handleFavoriteButtonClick;
+  }
 
- render() {
+  setHandleFavoriteButtonClick(handleFavoriteButtonClick) {
+    this.#handleFavoriteButtonClick = handleFavoriteButtonClick;
+  }
 
- }
+  update() {}
+
+  render() {}
 }
